@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Landing Page</title>
+    
+    <!-- Inline CSS -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        nav {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.4s;
+        }
+
+        nav.scrolled {
+            background: #111;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+
+        nav .logo {
+            color: white;
+            font-size: 28px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav ul li {
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ff0077;
+        }
+
+        .hero {
+            height: 100vh;
+            background: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding-top: 100px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 60px;
+        }
+
+        .hero p {
+            margin-top: 10px;
+            font-size: 20px;
+            opacity: 0.8;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #ff0077;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <h2 class="logo">MyWebsite</h2>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Responsive Landing Page</h1>
+        <p>This is my internship Task 01.</p>
+        <button class="btn">Get Started</button>
+    </section>
+
+    <!-- Inline JavaScript -->
+    <script>
+        window.addEventListener("scroll", function() {
+            const nav = document.getElementById("navbar");
+            if (window.scrollY > 50) {
+                nav.classList.add("scrolled");
+            } else {
+                nav.classList.remove("scrolled");
+            }
+        });
+    </script>
+
+</body>
+</html>
