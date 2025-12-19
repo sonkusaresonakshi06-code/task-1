@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tic Tac Toe</title>
+
+  <!-- ===== CSS ===== -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1d2671, #c33764);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #fff;
+      margin: 0;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #status {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 10px;
+      margin: 20px auto;
+    }
+
+    .cell {
+      width: 100px;
+      height: 100px;
+      background: white;
+      color: #333;
+      font-size: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .cell:hover {
+      background: #f2f2f2;
+      transform: scale(1.05);
+    }
+
+    button {
+      padding: 10px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #ffcc00;
+      color: #333;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #ffd633;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Tic Tac Toe</h1>
+    <div id="status">Your Turn (X)</div>
+
+    <div class="board" id="board">
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+
+    <button onclick="restartGame()">Restart Game</button>
+  </div>
+
+  <!-- ===== JavaScript ===== -->
+  <script>
+    const cells = document.querySelectorAll(".cell");
+    const statusText = document.getElementById("status");
+
+    let board = ["", "", "", "", "", "", "", "", ""];
+    let gameActive = true;
+
+    const player = "X";
+    const computer = "O";
+
+    const winConditions = [
+      [0,1,2], [3,4,5], [6,7,8],
+      [0,3,6], [1,4,7], [2,5,8],
+      [0,4,8], [2,4,6]
+    ];
+
+    cells.forEach((cell, index) => {
+      cell.addEventListener("click", () => playerMove(index));
+    });
+
+    function playerMove(index) {
+      if (board[index] !== "" || !gameActive) return;
+
+      board[index] = player;
+      cells[index].textContent = player;
+
+      if (checkWinner(player)) {
+        statusText.textContent = "🎉 You Win!";
+        gameActive = false;
+        return;
+      }
+
+      if (board.every(cell => cell !== "")) {
+        statusText.textContent = "🤝 Draw!";
+        gameActive = false;
+        return;
+      }
+
+      statusText.textContent = "Computer Turn...";
+      setTimeout(computerMove, 500);
+    }
+
+    function computerMove() {
+      let emptyCells = board
+        .map((val, idx) => val === "" ? idx : null)
+        .filter(val => val !== null);
+
+      let randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+      board[randomIndex] = computer;
+      cells[randomIndex].textContent = computer;
+
+      if (checkWinner(computer)) {
+        statusText.textContent = "💻 Computer Wins!";
+        gameActive = false;
+        return;
+      }
+
+      if (board.every(cell => cell !== "")) {
+        statusText.textContent = "🤝 Draw!";
+        gameActive = false;
+        return;
+      }
+
+      statusText.textContent = "Your Turn (X)";
+    }
+
+    function checkWinner(player) {
+      return winConditions.some(condition =>
+        condition.every(index => board[index] === player)
+      );
+    }
+
+    function restartGame() {
+      board = ["", "", "", "", "", "", "", "", ""];
+      gameActive = true;
+      statusText.textContent = "Your Turn (X)";
+      cells.forEach(cell => cell.textContent = "");
+    }
+  </script>
+
+</body>
+</html>
