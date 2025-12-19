@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Galaxy To-Do App</title>
+
+  <!-- ===== CSS ===== -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
+        url("https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .todo-card {
+      background: white;
+      width: 460px;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .todo-card h1 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr auto;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .input-row input,
+    .input-row button {
+      height: 42px;
+      font-size: 14px;
+    }
+
+    .input-row input {
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .input-row button {
+      padding: 0 18px;
+      border: none;
+      border-radius: 8px;
+      background: #ec4899;
+      color: white;
+      cursor: pointer;
+    }
+
+    .input-row button:hover {
+      background: #db2777;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    li {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .task-text {
+      cursor: pointer;
+    }
+
+    .task-text small {
+      display: block;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .actions button {
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      color: white;
+    }
+
+    .edit {
+      background: #f59e0b;
+    }
+
+    .delete {
+      background: #ef4444;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+    <div class="todo-card">
+      <h1>📝 To-Do List</h1>
+      <p class="subtitle">Organize your tasks efficiently</p>
+
+      <div class="input-row">
+        <input type="text" id="taskInput" placeholder="Enter your task">
+        <input type="datetime-local" id="taskDate">
+        <button id="addBtn">Add</button>
+      </div>
+
+      <ul id="taskList"></ul>
+    </div>
+  </div>
+
+  <!-- ===== JavaScript ===== -->
+  <script>
+    const taskInput = document.getElementById("taskInput");
+    const taskDate = document.getElementById("taskDate");
+    const addBtn = document.getElementById("addBtn");
+    const taskList = document.getElementById("taskList");
+
+    addBtn.addEventListener("click", addTask);
+
+    function addTask() {
+      if (taskInput.value.trim() === "") {
+        alert("Please enter a task");
+        return;
+      }
+
+      const li = document.createElement("li");
+
+      const taskText = document.createElement("div");
+      taskText.className = "task-text";
+      taskText.innerHTML = `
+        <strong>${taskInput.value}</strong>
+        <small>${taskDate.value || "No date & time set"}</small>
+      `;
+
+      taskText.onclick = () => {
+        taskText.classList.toggle("completed");
+      };
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      const editBtn = document.createElement("button");
+      editBtn.className = "edit";
+      editBtn.textContent = "Edit";
+      editBtn.onclick = () => {
+        const newTask = prompt("Edit task", taskText.querySelector("strong").textContent);
+        if (newTask) {
+          taskText.querySelector("strong").textContent = newTask;
+        }
+      };
+
+      const deleteBtn = document.createElement("button");
+      deleteBtn.className = "delete";
+      deleteBtn.textContent = "Delete";
+      deleteBtn.onclick = () => li.remove();
+
+      actions.append(editBtn, deleteBtn);
+      li.append(taskText, actions);
+      taskList.appendChild(li);
+
+      taskInput.value = "";
+      taskDate.value = "";
+    }
+  </script>
+
+</body>
+</html>
